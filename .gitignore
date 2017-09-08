@@ -4,4 +4,4 @@
 *.js.meta
 node_modules/
 build/
-.idea
+.idea/
