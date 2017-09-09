@@ -1,5 +1,15 @@
 <?php
 header('Access-Control-Allow-Origin: *');
-$user = $_GET['user'];
-echo file_get_contents("https://www.instagram.com/$user/media/");
+if (isset($_GET) && isset($_GET['id']) && $_GET['id'] != 0)
+{
+	$user = $_GET['user'];
+	$id = $_GET['id'];
+	echo file_get_contents("https://www.instagram.com/$user/media/?max_id=$id");
+}
+else
+{
+	$user = $_GET['user'];
+	echo file_get_contents("https://www.instagram.com/$user/media/");
+	// readfile('res/json.json');
+}
 ?>

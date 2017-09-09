@@ -14,14 +14,17 @@ class App extends PureComponent {
 			color: 'red',
 			renderBox: false,
       images: [],
+			currentUser: '4ch_one'
 		};
   }
 
 	componentDidMount() {
-    getImagesTemp('nilson_kos')
+    getImagesTemp(this.state.currentUser, 0)
       .then((data) => {
         this.setState({
-          images: data // TODO add images instagramm
+          images: data.images, // TODO add images instagramm
+					usernames: data.usernames,
+					lastId: data.lastId
         });
       })
 		this.setState({renderBox: true});
@@ -43,9 +46,7 @@ class App extends PureComponent {
   );
 
 	enterHandle = () => {
-		// console.log('enterHandle');
-		// console.log('this',[this]);
-		// console.log('hello',[document.getElementById('anim123').components.animation.animation]);
+		console.log('hello',[document.getElementById('anim123').components.animation.animation]);
 		document.getElementById('anim123').components.animation.animation.pause();
 	}
 
@@ -57,6 +58,17 @@ class App extends PureComponent {
 		console.log('animationCompleteHandle');
 		console.log(this);
 		console.log(e);
+    getImagesTemp(this.state.currentUser, this.state.lastId)
+      .then((data) => {
+        this.setState({
+          images: data.images, // TODO add images instagramm
+					usernames: data.usernames,
+					lastId: data.lastId
+        });
+				console.log(this.state);
+      })
+		this.setState({renderBox: true});
+		this.leaveHandle(); //start animation
 	}
 
 	createBoxes = () => {
@@ -64,22 +76,22 @@ class App extends PureComponent {
 		let coords = [];
 		let blockId = 0;
 		for (let i = 0; i < images.length; i++) {
-			coords.push({x: -1.5 * 3, y: 2, z: -i*3, id: blockId, src:images[i]});
+			coords.push({x: -1.5 * 3, y: 2, z: -i*3, id: blockId, src:images[i], username:this.state.usernames[i]});
 			blockId += 1;
 		}
 		for (let i = 0; i < images.length; i++) {
-			coords.push({x: 1.5 * 3, y: 2, z: -i*3, id: blockId, src:images[i]});
+			coords.push({x: 1.5 * 3, y: 2, z: -i*3, id: blockId, src:images[i], username:this.state.usernames[i]});
 			blockId += 1;
 		}
 		let params = {}
-		params.shift = ((((images.length)) * 3));
-		params.duration = (images.length * 1000);
+		params.shift = ((((images.length * 3).toString())));
+		params.duration = (images.length * 1000).toString();
 		console.log(params);
 					// animation={`property: position; dur: ${params.duration}; to: 0 0 ${params.shift}`}
 		return (<Entity primitive='a-box' position="0 0 0" id="anim123"
-					animation={`property: position; dur: 16000; to: 0 0 16`}
+					animation={"property: position; dur: " + params.duration + "; to: 0 0 " + params.shift}
 					events={{
-						animationbegin: this.animationCompleteHandle,
+						animationbegin: () => {console.log('animationbegin')},
 						animationcomplete: this.animationCompleteHandle
 					}}
 		>
@@ -93,6 +105,7 @@ class App extends PureComponent {
 				key={pos.id}
 				position={`${pos.x} ${pos.y} ${pos.z}`}
 				src={`${pos.src}`}
+				dataUsername={`${pos.username}`}
 				events={{
 					mouseenter:this.enterHandle,
 					mouseleave:this.leaveHandle
