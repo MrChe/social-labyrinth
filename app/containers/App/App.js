@@ -4,7 +4,7 @@ import 'aframe-animation-component';
 import 'aframe-particle-system-component';
 import 'babel-polyfill';
 import InstagramEmbed from 'react-instagram-embed';
-import { getUserInfo, getImages } from 'utils/helpers';
+import { getUserInfo, getImages, getImagesTemp } from 'utils/helpers';
 import { Entity, Scene } from 'aframe-react';
 
 class App extends PureComponent {
@@ -18,12 +18,12 @@ class App extends PureComponent {
   }
 
 	componentDidMount() {
-    // getImages(username)
-    //   .then((data) => {
-    //     this.setState({
-    //       images: data.images // TODO add images instagramm
-    //     });
-    //   })
+    getImagesTemp('nilson_kos')
+      .then((data) => {
+        this.setState({
+          images: data // TODO add images instagramm
+        });
+      })
 		this.setState({renderBox: true});
 	}
 
@@ -43,17 +43,18 @@ class App extends PureComponent {
   );
 
 	createBoxes = () => {
-		let images = [];
-		for (let i = 0; i < 10; i++) {
-			images.push('http://i.imgur.com/PPzncqLl.png');
-		}
+		// let images = [];
+		let images = this.state.images;
+		// for (let i = 0; i < 10; i++) {
+		// 	images.push('http://i.imgur.com/PPzncqLl.png');
+		// }
 		let coords = [];
 		let blockId = 0;
-		for (let i = 0; i < 10; i++) {
+		for (let i = 0; i < images.length; i++) {
 			coords.push({x: -1.5 * 3, y: 2, z: -i*3, id: blockId, src:images[i]});
 			blockId += 1;
 		}
-		for (let i = 0; i < 10; i++) {
+		for (let i = 0; i < images.length; i++) {
 			coords.push({x: 1.5 * 3, y: 2, z: -i*3, id: blockId, src:images[i]});
 			blockId += 1;
 		}
