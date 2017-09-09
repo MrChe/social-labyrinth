@@ -13,7 +13,7 @@ sassThreadLoader.warmup({ workerParallelJobs: 2 }, ['sass-loader', 'css-loader',
 
 // replace localhost with 0.0.0.0 if you want to access
 // your app from wifi or a virtual machine
-const host = process.env.HOST || '0.0.0.0';
+const host = process.env.HOST || 'localhost';
 const port = process.env.PORT || 3000;
 const sourcePath = path.join(__dirname, './app');
 const buildDirectory = path.join(__dirname, './build');
@@ -146,14 +146,14 @@ module.exports = function(env) {
       new webpack.NoEmitOnErrorsPlugin(),
       // load DLL files
       /* eslint-disable global-require */
-      new webpack.DllReferencePlugin({
-        context: __dirname,
-        manifest: require('./dll/libs-manifest.json'),
-      }),
+      // new webpack.DllReferencePlugin({
+      //   context: __dirname,
+      //   manifest: require('./dll/libs-manifest.json'),
+      // }),
       /* eslint-enable global-require */
 
-      // make DLL assets available for the app to download
-      new AddAssetHtmlPlugin([{ filepath: require.resolve('./dll/libs.dll.js') }])
+      // // make DLL assets available for the app to download
+      // new AddAssetHtmlPlugin([{ filepath: require.resolve('./dll/libs.dll.js') }])
     );
 
     cssLoader = [
@@ -293,6 +293,12 @@ module.exports = function(env) {
       hot: !isProd,
       compress: isProd,
       stats: stats,
+      headers: {
+        "Access-Control-Allow-Origin": "http://localhost:3000",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization, x-id, Content-Length, X-Requested-With",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS"
+      }
     },
   };
 };

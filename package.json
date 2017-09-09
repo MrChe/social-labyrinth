@@ -47,6 +47,7 @@
     "file-loader": "0.11.2",
     "firebase-tools": "^3.9.2",
     "html-webpack-plugin": "2.30.1",
+    "instagram-api": "^1.0.3",
     "lighthouse": "^2.4.0",
     "lodash": "^4.17.4",
     "node-sass": "^4.5.3",
