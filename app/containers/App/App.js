@@ -3,6 +3,7 @@ import 'aframe';
 import 'aframe-animation-component';
 import 'aframe-particle-system-component';
 import 'babel-polyfill';
+import InstagramEmbed from 'react-instagram-embed';
 import { getUserInfo, getImages } from 'utils/helpers';
 import { Entity, Scene } from 'aframe-react';
 
@@ -23,6 +24,21 @@ class App extends PureComponent {
         });
       })
   }
+
+  renderPost = () => (
+    // https://github.com/sugarshin/react-instagram-embed
+    <InstagramEmbed
+      url='https://instagr.am/p/Zw9o4/'
+      maxWidth={320}
+      hideCaption={false}
+      containerTagName='div'
+      protocol=''
+      onLoading={() => {}}
+      onSuccess={() => {}}
+      onAfterRender={() => {}}
+      onFailure={() => {}}
+    />
+  );
 
   changeColor = () => {
     const colors = ['red', 'orange', 'yellow', 'green', 'blue'];
@@ -57,7 +73,6 @@ class App extends PureComponent {
                   geometry={{primitive: 'box', depth: 0.2, height: 0.2, width: 0.2}}
                   material={{color: '#24CAFF'}}/>
         </Entity>
-
         <Entity primitive="a-camera">
           <Entity primitive="a-cursor" animation__click={{property: 'scale', startEvents: 'click', from: '0.1 0.1 0.1', to: '1 1 1', dur: 150}}/>
         </Entity>
