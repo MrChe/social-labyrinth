@@ -43,8 +43,14 @@ class App extends PureComponent {
   );
 
 	enterHandle = () => {
-		console.log('enterHandle');
-		document.getElementById('anim').setAttribute();
+		// console.log('enterHandle');
+		// console.log('this',[this]);
+		// console.log('hello',[document.getElementById('anim123').components.animation.animation]);
+		document.getElementById('anim123').components.animation.animation.pause();
+	}
+
+	leaveHandle = () => {
+		document.getElementById('anim123').components.animation.animation.play();
 	}
 
 	animationCompleteHandle = (e) => {
@@ -66,11 +72,12 @@ class App extends PureComponent {
 			blockId += 1;
 		}
 		let params = {}
-		params.shift = (-(((images.length - 3)) * 3)).toString();
-		params.duration = (images.length * 1000).toString();
+		params.shift = ((((images.length)) * 3));
+		params.duration = (images.length * 1000);
 		console.log(params);
+					// animation={`property: position; dur: ${params.duration}; to: 0 0 ${params.shift}`}
 		return (<Entity primitive='a-box' position="0 0 0" id="anim123"
-					animation={`property: position; dur: 16000; to: 0 0 ${params.shift}`}
+					animation={`property: position; dur: 16000; to: 0 0 16`}
 					events={{
 						animationbegin: this.animationCompleteHandle,
 						animationcomplete: this.animationCompleteHandle
@@ -87,7 +94,8 @@ class App extends PureComponent {
 				position={`${pos.x} ${pos.y} ${pos.z}`}
 				src={`${pos.src}`}
 				events={{
-					mouseenter:this.enterHandle
+					mouseenter:this.enterHandle,
+					mouseleave:this.leaveHandle
 				}}
 				/>
 			)
