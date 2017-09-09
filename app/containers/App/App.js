@@ -3,16 +3,28 @@ import 'aframe';
 import 'aframe-animation-component';
 import 'aframe-particle-system-component';
 import 'babel-polyfill';
-import {Entity, Scene} from 'aframe-react';
+import InstagramEmbed from 'react-instagram-embed';
+import { getUserInfo, getImages } from 'utils/helpers';
+import { Entity, Scene } from 'aframe-react';
 
 class App extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {color: 'red', renderBox: false};
+    this.state = {
+			color: 'red',
+			renderBox: false
+      images: [],
+		};
   }
 
 	componentDidMount() {
 		this.setState({renderBox: true});
+    getImages(username)
+      .then((data) => {
+        this.setState({
+          images: data.images, // TODO add images instagramm
+        });
+      })
 	}
 
 	createBoxes = (Component) => {
@@ -29,7 +41,7 @@ class App extends PureComponent {
     this.setState({
       color: colors[Math.floor(Math.random() * colors.length)]
     });
-  }
+  };
 
   render () {
     return (
@@ -52,12 +64,11 @@ class App extends PureComponent {
                 animation__rotate={{property: 'rotation', dur: 2000, loop: true, to: '360 360 360'}}
                 animation__scale={{property: 'scale', dir: 'alternate', dur: 100, loop: true, to: '1.1 1.1 1.1'}}
                 position={{x: 0, y: 1, z: -3}}
-                events={{click: this.changeColor.bind(this)}}>
+                events={{click: this.changeColor}}>
           <Entity animation__scale={{property: 'scale', dir: 'alternate', dur: 100, loop: true, to: '2 2 2'}}
                   geometry={{primitive: 'box', depth: 0.2, height: 0.2, width: 0.2}}
                   material={{color: '#24CAFF'}}/>
         </Entity>
-
         <Entity primitive="a-camera">
           <Entity primitive="a-cursor" animation__click={{property: 'scale', startEvents: 'click', from: '0.1 0.1 0.1', to: '1 1 1', dur: 150}}/>
         </Entity>
