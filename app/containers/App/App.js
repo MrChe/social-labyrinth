@@ -42,12 +42,19 @@ class App extends PureComponent {
     />
   );
 
+	enterHandle = () => {
+		console.log('enterHandle');
+		document.getElementById('anim').setAttribute();
+	}
+
+	animationCompleteHandle = (e) => {
+		console.log('animationCompleteHandle');
+		console.log(this);
+		console.log(e);
+	}
+
 	createBoxes = () => {
-		// let images = [];
 		let images = this.state.images;
-		// for (let i = 0; i < 10; i++) {
-		// 	images.push('http://i.imgur.com/PPzncqLl.png');
-		// }
 		let coords = [];
 		let blockId = 0;
 		for (let i = 0; i < images.length; i++) {
@@ -58,8 +65,20 @@ class App extends PureComponent {
 			coords.push({x: 1.5 * 3, y: 2, z: -i*3, id: blockId, src:images[i]});
 			blockId += 1;
 		}
-		return coords.map((pos) => (
+		let params = {}
+		params.shift = (-(((images.length - 3)) * 3)).toString();
+		params.duration = (images.length * 1000).toString();
+		console.log(params);
+		return (<Entity primitive='a-box' position="0 0 0" id="anim123"
+					animation={`property: position; dur: 16000; to: 0 0 ${params.shift}`}
+					events={{
+						animationbegin: this.animationCompleteHandle,
+						animationcomplete: this.animationCompleteHandle
+					}}
+		>
+		{coords.map((pos) => (
 			<Entity
+				visible="true"
 				primitive="a-box"
 				height="4"
 				widht="3"
@@ -67,9 +86,13 @@ class App extends PureComponent {
 				key={pos.id}
 				position={`${pos.x} ${pos.y} ${pos.z}`}
 				src={`${pos.src}`}
+				events={{
+					mouseenter:this.enterHandle
+				}}
 				/>
 			)
-		);
+		)}
+		</Entity>);
 	}
 
   changeColor = () => {
