@@ -13,7 +13,7 @@ sassThreadLoader.warmup({ workerParallelJobs: 2 }, ['sass-loader', 'css-loader',
 
 // replace localhost with 0.0.0.0 if you want to access
 // your app from wifi or a virtual machine
-const host = process.env.HOST || 'localhost';
+const host = process.env.HOST || '0.0.0.0';
 const port = process.env.PORT || 3000;
 const sourcePath = path.join(__dirname, './app');
 const buildDirectory = path.join(__dirname, './build');

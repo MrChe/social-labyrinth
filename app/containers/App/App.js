@@ -8,10 +8,23 @@ import {Entity, Scene} from 'aframe-react';
 class App extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {color: 'red'};
+    this.state = {color: 'red', renderBox: false};
   }
 
-  changeColor() {
+	componentDidMount() {
+		this.setState({renderBox: true});
+	}
+
+	createBoxes = (Component) => {
+		const coords = [
+			{x: -1, y: 2, z: 0, id: 0},
+			{x: -2, y: 2, z: 0, id: 1},
+			{x: -3, y: 2, z: 0, id: 2},
+		]
+		return coords.map((pos) => <Entity primitive="a-box" key={pos.id} position={`${pos.x} ${pos.y} ${pos.z}`} />);
+	}
+
+  changeColor = () => {
     const colors = ['red', 'orange', 'yellow', 'green', 'blue'];
     this.setState({
       color: colors[Math.floor(Math.random() * colors.length)]
@@ -48,6 +61,7 @@ class App extends PureComponent {
         <Entity primitive="a-camera">
           <Entity primitive="a-cursor" animation__click={{property: 'scale', startEvents: 'click', from: '0.1 0.1 0.1', to: '1 1 1', dur: 150}}/>
         </Entity>
+				{this.state.renderBox && this.createBoxes()}
       </Scene>
     );
   }
